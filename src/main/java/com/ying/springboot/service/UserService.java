@@ -7,5 +7,7 @@ import com.ying.springboot.entity.User;
 
 public interface UserService extends IService<User> {
 
-    boolean login(UserDTO userDTO);
+    UserDTO login(UserDTO userDTO);
+    User register(UserDTO userDTO);
+
 }

@@ -1,8 +1,11 @@
 package com.ying.springboot.controller;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.ying.springboot.common.Constants;
+import com.ying.springboot.common.Result;
 import com.ying.springboot.controller.dto.UserDTO;
 import com.ying.springboot.entity.User;
 import com.ying.springboot.service.UserService;
@@ -19,10 +22,24 @@ public class UserController {
 
     //用户登陆
     @PostMapping("/login")
-    public boolean login(@RequestBody UserDTO userDTO){
-
-
-        return userService.login(userDTO);
+    public Result login(@RequestBody UserDTO userDTO){
+        String username=userDTO.getUsername();
+        String password=userDTO.getPassword();
+        if (StrUtil.isBlank(username)||StrUtil.isBlank(password)){
+            return Result.error(Constants.CODE_400,"参数错误");
+        }
+        UserDTO dto=userService.login(userDTO);
+        return Result.success(dto);
+    }
+    //用户注册
+    @PostMapping("/register")
+    public Result register(@RequestBody UserDTO userDTO){
+        String username=userDTO.getUsername();
+        String password=userDTO.getPassword();
+        if (StrUtil.isBlank(username)||StrUtil.isBlank(password)){
+            return Result.error(Constants.CODE_400,"参数错误");
+        }
+        return Result.success(userService.register(userDTO));
     }
     //查询所有数据
     @GetMapping
@@ -37,6 +54,15 @@ public class UserController {
     public boolean delete(@PathVariable Integer id) {
        return userService.removeById(id);
     }
+    @GetMapping("/username/{username}")
+    public User findOne(@PathVariable String username){
+        QueryWrapper<User> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("username",username);
+        return userService.getOne(queryWrapper);
+    }
+
+
+
     @PostMapping("/del/batch")
     public boolean deleteBatch(@RequestBody List<Integer> ids) {
         return userService.removeByIds(ids);
