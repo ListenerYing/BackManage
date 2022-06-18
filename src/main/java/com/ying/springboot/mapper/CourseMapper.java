@@ -2,13 +2,19 @@ package com.ying.springboot.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.ying.springboot.entity.User;
+import com.ying.springboot.entity.Course;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-
-import java.util.List;
+/**
+ * <p>
+ *  Mapper 接口
+ * </p>
+ *
+ * @author 应健霆
+ * @since 2022-06-07
+ */
 @Mapper
-public interface UserMapper extends BaseMapper<User> {
-
+public interface CourseMapper extends BaseMapper<Course> {
+    Page<Course> findPage(Page<Course> page,@Param("name") String name);
 }

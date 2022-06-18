@@ -1,6 +1,9 @@
 package com.ying.springboot.entity;
+
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 @Data
+@TableName(value = "sys_user")
 public class User {
     private Integer id;
     private String username;
@@ -10,4 +13,5 @@ public class User {
     private String phone;
     private String address;
     private String avatarUrl;
+    private String role;
 }

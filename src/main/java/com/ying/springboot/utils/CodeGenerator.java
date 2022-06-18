@@ -2,7 +2,6 @@ package com.ying.springboot.utils;
 
 import com.baomidou.mybatisplus.generator.FastAutoGenerator;
 import com.baomidou.mybatisplus.generator.config.OutputFile;
-import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 
 import java.util.Collections;
 
@@ -11,23 +10,26 @@ public class CodeGenerator {
         generate();
     }
     private static void generate(){
-        FastAutoGenerator.create("jdbc:mysql://localhost:3306/ying?severTimezone=UTC", "root", "root")
+        FastAutoGenerator.create("jdbc:mysql://localhost:3306/wyz?severTimezone=UTC", "root", "root")
                 .globalConfig(builder -> {
-                    builder.author("baomidou") // 设置作者
+                    builder.author("应健霆") // 设置作者
                             .enableSwagger() // 开启 swagger 模式
                             .fileOverride() // 覆盖已生成文件
-                            .outputDir("D:\\AHub\\VUE001\\springboot\\src\\main\\java"); // 指定输出目录
+                            .outputDir("D:\\AHub\\WYZ001\\springboot\\src\\main\\java\\"); // 指定输出目录
                 })
                 .packageConfig(builder -> {
                     builder.parent("com.ying.springboot") // 设置父包名
                             .moduleName("") // 设置父包模块名
-                            .pathInfo(Collections.singletonMap(OutputFile.mapper, "D:\\AHub\\VUE001\\springboot\\src\\main\\resources\\mapper")); // 设置mapperXml生成路径
+                            .pathInfo(Collections.singletonMap(OutputFile.mapperXml, "D:\\AHub\\WYZ001\\springboot\\src\\main\\resources\\mapper\\")); // 设置mapperXml生成路径
                 })
                 .strategyConfig(builder -> {
-                    builder.addInclude("user") // 设置需要生成的表名
+                    builder.entityBuilder().enableLombok();
+                    builder.controllerBuilder().enableHyphenStyle()//开启驼峰转连字符
+                            .enableRestStyle();//开启生成@RestController控制器
+                    builder.addInclude("student") // 设置需要生成的表名
                             .addTablePrefix("sys_"); // 设置过滤表前缀
                 })
-                .templateEngine(new FreemarkerTemplateEngine()) // 使用Freemarker引擎模板，默认的是Velocity引擎模板
+//                .templateEngine(new FreemarkerTemplateEngine()) // 使用Freemarker引擎模板，默认的是Velocity引擎模板
                 .execute();
 
     }

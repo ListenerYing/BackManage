@@ -43,37 +43,39 @@ public class UserController {
     }
     //查询所有数据
     @GetMapping
-    public List<User> getAll(){return userService.list();}
+    public Result getAll(){return Result.success(userService.list());}
     //新增和修改
     @PostMapping
-    public boolean save(@RequestBody User user){return userService.saveOrUpdate(user);}
+    public Result save(@RequestBody User user){return Result.success(userService.saveOrUpdate(user));}
     //修改
     //@PutMapping
 //    public Boolean update(@RequestBody User user){return UserService.modify(user); }
     @DeleteMapping("/{id}")
-    public boolean delete(@PathVariable Integer id) {
-       return userService.removeById(id);
+    public Result delete(@PathVariable Integer id) {
+       return Result.success(userService.removeById(id));
     }
     @GetMapping("/username/{username}")
-    public User findOne(@PathVariable String username){
+    public Result findOne(@PathVariable String username){
         QueryWrapper<User> queryWrapper=new QueryWrapper<>();
         queryWrapper.eq("username",username);
-        return userService.getOne(queryWrapper);
+        return Result.success(userService.getOne(queryWrapper));
     }
 
 
 
     @PostMapping("/del/batch")
-    public boolean deleteBatch(@RequestBody List<Integer> ids) {
-        return userService.removeByIds(ids);
+    public Result deleteBatch(@RequestBody List<Integer> ids) {
+        return Result.success(userService.removeByIds(ids));
     }
     //分页查询
     @GetMapping("/page")
-    public IPage<User> findPage(@RequestParam Integer pageNum,
+    public Result findPage(@RequestParam Integer pageNum,
                                 @RequestParam Integer pageSize,
                                 @RequestParam (defaultValue="") String username ,
                                 @RequestParam (defaultValue="") String email,
-                                @RequestParam (defaultValue="") String address){
+                                @RequestParam (defaultValue="") String address
+                                                                                ){
+
         IPage<User> page=new Page<>(pageNum,pageSize);
         QueryWrapper<User> queryWrapper=new QueryWrapper<>();
         if (!"".equals(username)){
@@ -85,7 +87,25 @@ public class UserController {
         if (!"".equals(address)){
             queryWrapper.like("address",address);
         }
-        return userService.page(page,queryWrapper);
+        return Result.success(userService.page(page,queryWrapper));
+
+    }
+    //分页查询所有老师
+    @GetMapping("/page/teacher")
+    public Result findTeacher(@RequestParam Integer pageNum,
+                           @RequestParam Integer pageSize,
+                           @RequestParam (defaultValue="") String username
+
+                                                                        ){
+
+        IPage<User> page=new Page<>(pageNum,pageSize);
+        QueryWrapper<User> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("role","老师");
+        if (!"".equals(username)){
+            queryWrapper.like("username",username);
+        }
+
+        return Result.success(userService.page(page,queryWrapper));
 
     }
     }

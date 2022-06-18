@@ -7,13 +7,13 @@ spring:
   datasource:
     druid:
       driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://localhost:3306/ying?severTimezone=UTC
+      url: jdbc:mysql://localhost:3306/wyz?severTimezone=UTC
       username: root
       password: root
 mybatis-plus:
   global-config:
     db-config:
-      table-prefix: sys_
+      table-prefix:
       id-type: auto
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
